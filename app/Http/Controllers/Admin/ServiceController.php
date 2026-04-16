@@ -20,12 +20,12 @@ class ServiceController extends Controller
             });
         }
 
-        if ($request->has('category')) {
-            $query->where('category', $request->category);
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
         }
 
         $services = $query->paginate(15);
-        $categories = Service::select('category')->distinct()->pluck('category');
+        $categories = Service::select('category_id')->distinct()->pluck('category_id');
 
         return view('admin.services.index', compact('services', 'categories'));
     }

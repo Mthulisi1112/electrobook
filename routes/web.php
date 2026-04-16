@@ -35,9 +35,7 @@ use App\Http\Controllers\ContactController;
 | Home Route
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 /*
 |--------------------------------------------------------------------------

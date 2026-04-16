@@ -68,7 +68,7 @@ class ServiceController extends Controller
             }
         ]);
 
-        // Organize categories by type for Thumbtack layout
+        // Organize categories by type 
         $groupedCategories = [
             'Interior' => $service->categories->where('type', 'interior'),
             'Exterior' => $service->categories->where('type', 'exterior'),

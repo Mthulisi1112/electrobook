@@ -3,197 +3,420 @@
 @section('title', 'ElectroBook - Find Trusted Electricians')
 
 @section('content')
-<!-- Hero Section with Yellowish-Grey Background -->
-<div class="relative overflow-hidden" style="background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d3 50%, #d9cfbf 100%);">
-    <!-- Subtle electrical pattern overlay -->
-    <div class="absolute inset-0 opacity-5" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M30 0 L30 60 M0 30 L60 30 M15 15 L45 45 M45 15 L15 45\" stroke=\"%236b5a3a\" stroke-width=\"0.5\" fill=\"none\"/%3E%3C/svg%3E'); background-repeat: repeat;"></div>
-    
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-        <div class="text-center max-w-3xl mx-auto">
-            <div class="text-center max-w-4xl mx-auto">
-                <h1 class="text-4xl md:text-6xl font-bold text-gray-800 mb-6">
-                    Find the right 
-                    <span class="text-amber-600 relative inline-block min-w-[200px]">
-                        <span id="animated-word" class="inline-block transition-all duration-500"></span>
-                    </span> 
-                    <br class="hidden sm:block">
-                    for your home
-                </h1>
-                <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                    Browse trusted professionals, compare prices, and book instantly.
-                </p>
+
+
+<!-- Hero section -->
+<div class="relative bg-white overflow-hidden">
+    <!-- Logo – hidden on mobile -->
+    <div class="hidden sm:flex items-center justify-center mt-10">
+        <div class="w-10 h-10 bg-[#009FD9] rounded-full flex items-center justify-center shadow-sm">
+            <span class="text-white font-bold text-base">E</span>
+        </div>
+    </div>
+
+    <!-- Image – ONLY on mobile (above heading) -->
+    <div class="block sm:hidden relative overflow-hidden  pb-6">
+        <div class="max-w-sm mx-auto px-4 py-6">
+            <div class="relative flex justify-center">
+                <div class="w-full max-w-sm mx-auto overflow-hidden">
+                    <!-- Dome container -->
+                    <div class="relative overflow-hidden rounded-t-full shadow-2xl"> 
+                        <img 
+                            src="{{ Storage::url('images/backgrounds/electrician.jpg') }}" 
+                            alt="Professional electrician working"
+                            class="w-full h-[200px] object-cover"
+                            loading="eager"
+                        >
+                        <!-- Gradient overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+                    </div>
+                </div>
             </div>
-            <!-- Search Bar -->
-            <form action="{{ route('search') }}" method="GET" class="bg-white p-2 rounded-xl shadow-lg border border-gray-200 max-w-2xl mx-auto">
-                <div class="flex flex-col sm:flex-row">
-                    <input type="text" 
-                        name="q"
-                        placeholder="What electrical service do you need?" 
-                        class="flex-1 px-4 py-3 border-0 focus:outline-none text-gray-700 rounded-lg">
-                    <button type="submit" class="sm:ml-2 px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition">
-                        Search
-                    </button>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-4 lg:py-8 text-center">
+        <!-- Main heading  -->
+        <h1 
+            x-data="{ show: false }"
+            x-init="setTimeout(() => show = true, 100)"
+            x-show="show"
+            x-transition:enter="transition-all duration-700 ease-out"
+            x-transition:enter-start="opacity-0 scale-90 blur-sm"
+            x-transition:enter-end="opacity-100 scale-100 blur-0"
+            class="text-2xl md:text-4xl font-bold text-[#2F3033] mb-4"
+        >
+            Electrical Installations, made easy.
+        </h1>
+                <!-- Descriptive prompt -->
+        <p class="text-sm md:text-lg text-[#2F3033] mb-6 max-w-2xl mx-auto">
+            Describe your project or problem — be as detailed as you'd like!
+        </p>
+
+        <!-- Desktop search:-->
+        <form action="{{ route('search') }}" method="GET" class="hidden sm:flex bg-white rounded shadow-lg border border-gray-200 gap-2 max-w-4xl mx-auto ">
+            <div class="flex-1 relative">
+                <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <input type="text" name="q" placeholder="E.g., Fix a broken outlet, install ceiling fan, panel upgrade..." class="w-full pl-12 pr-4 py-4 focus:outline-none rounded text-black text-base">
+            </div>
+            <button class="bg-[#009FD9] text-white text-base px-5 py-3 rounded-r hover:bg-sky-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg">
+                Find a pro
+            </button>
+        </form>
+
+        <!-- Mobile search-->
+        <div class="max-w-3xl mx-auto block sm:hidden">
+            <form id="mobile-search-form" action="{{ route('search') }}" method="GET" class="bg-white rounded shadow-xl border border-gray-200">
+                <div class="relative">
+                    <svg class="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" name="q" placeholder="E.g., Fix a broken outlet, install ceiling fan, panel upgrade..." class="w-full pl-12 pr-4 py-4 focus:outline-none rounded text-gray-800 text-sm">
                 </div>
             </form>
-                        
-            <!-- Popular searches -->
-            <div class="flex flex-wrap justify-center gap-2 mt-6">
-                <a href="#" class="text-sm text-gray-700 hover:text-amber-600 px-3 py-1 bg-white/80 rounded-full">Emergency repair</a>
-                <a href="#" class="text-sm text-gray-700 hover:text-amber-600 px-3 py-1 bg-white/80 rounded-full">Lighting installation</a>
-                <a href="#" class="text-sm text-gray-700 hover:text-amber-600 px-3 py-1 bg-white/80 rounded-full">Panel upgrade</a>
-                <a href="#" class="text-sm text-gray-700 hover:text-amber-600 px-3 py-1 bg-white/80 rounded-full">Outlet repair</a>
+            <div class="mt-2 flex justify-center">
+                <button type="submit" form="mobile-search-form" class="bg-sky-600 text-white text-sm px-5 py-3 rounded-md hover:bg-sky-700 transition-all duration-300 font-semibold shadow-md hover:shadow-lg w-full">
+                    Find a pro
+                </button>
+            </div>
+        </div>
+
+        <!-- Popular searches -->
+        <div class="flex flex-wrap gap-2 justify-center items-center mt-6">
+            <span class="text-sm text-gray-600">Popular:</span>
+            @forelse($popularServices as $service)
+                <a href="{{ route('service.electricians', ['service' => $service->slug]) }}"
+                class="px-3 py-2 bg-[#E8F1FD] shadow-sm rounded-full text-xs font-semibold text-[#2F3033] hover:text-[#009FD9] hover:bg-gray-200 transition">
+                    {{ $service->name }}
+                </a>
+            @empty
+                <span class="text-sm text-gray-400">No popular services yet</span>
+            @endforelse
+        </div>
+
+        <!-- Trust badge (stars + reviews + people count) -->
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-2 text-gray-800 text-base ">
+            <span class="text-[#2F3033]">Trusted by 4.5M+ people</span>
+            <span class="font-semibold text-gray-800">
+                4.9/5 <span class="text-green-500">★</span>
+            </span>
+            <span class="text-[#2F3033]">with over 300k reviews on the App Store</span>        
+        </div>
+
+        <!-- Dome-shaped image – ONLY on desktop -->
+<div class="hidden md:block relative overflow-hidden pt-20 -mb-10">
+    <div class="max-w-[655px] mx-auto px-4">
+        <div class="relative flex justify-center">
+            <div class="transform hover:scale-[1.02] transition duration-500 w-full">
+                <div class="relative overflow-hidden rounded-t-full shadow-2xl">
+                    <img 
+                        src="{{ Storage::url('images/backgrounds/electrician.jpg') }}" 
+                        alt="Professional electrician working"
+                        class="w-full h-[327px] object-cover"
+                        style="aspect-ratio: 655 / 327;"
+                        loading="eager"
+                    >
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+
+<!-- TRUST BAR -->
+<div class="bg-gray-100 border-y border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8 text-center">
+        <div class="flex items-center justify-center space-x-3">
+            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="text-left">
+                <p class="font-semibold text-[#2F3033]">Verified Electricians</p>
+                <p class="text-sm text-[#2F3033]">Background checked professionals</p>
+            </div>
+        </div>
+        <div class="flex items-center justify-center space-x-3">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#009FD9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+            <div class="text-left">
+                <p class="font-semibold text-[#2F3033]">Instant Booking</p>
+                <p class="text-sm text-[#2F3033]">Book services in minutes</p>
+            </div>
+        </div>
+        <div class="flex items-center justify-center space-x-3">
+            <div class="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center">
+                <svg class="w-5 h-5 text-[#009FD9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linecap="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                </svg>
+            </div>
+            <div class="text-left">
+                <p class="font-semibold text-[#2F3033]">Trusted by Customers</p>
+                <p class="text-sm text-[#2F3033]">Thousands of completed jobs</p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Stats Section -->
-<div class="border-y border-gray-200 bg-white/80 backdrop-blur-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div class="text-center">
-                <p class="text-3xl font-bold text-amber-600">500+</p>
-                <p class="text-sm text-gray-600">Verified electricians</p>
+<div class="relative p-20 mt-10 text-white overflow-hidden">
+
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+        <img 
+            src="{{Storage::url('images/backgrounds/power-outage.jpg')}}"
+            class="w-full h-full object-cover"
+            alt="Electrical work background"
+        >
+    </div>
+
+    <!-- Content -->
+    <div class="relative max-w-7xl mx-auto my-12 py-5 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+
+            <div>
+                <p class="text-3xl font-bold mb-2">500+</p>
+                <p class="text-[#2F3033]">Verified electricians</p>
             </div>
-            <div class="text-center">
-                <p class="text-3xl font-bold text-amber-600">10k+</p>
-                <p class="text-sm text-gray-600">Jobs completed</p>
+
+            <div>
+                <p class="text-3xl font-bold mb-2">10k+</p>
+                <p class="text-[#2F3033]">Jobs completed</p>
             </div>
-            <div class="text-center">
-                <p class="text-3xl font-bold text-amber-600">4.8/5</p>
-                <p class="text-sm text-gray-600">Average rating</p>
+
+            <div>
+                <p class="text-3xl font-bold mb-2">4.8/5</p>
+                <p class="text-[#2F3033]">Average rating</p>
             </div>
-            <div class="text-center">
-                <p class="text-3xl font-bold text-amber-600">24/7</p>
-                <p class="text-sm text-gray-600">Emergency service</p>
+
+            <div>
+                <p class="text-3xl font-bold mb-2">24/7</p>
+                <p class="text-[#2F3033]">Emergency service</p>
             </div>
+
         </div>
     </div>
 </div>
 
-<!-- How It Works with Images -->
-<div id="how-it-works" class="py-16" style="background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d3 100%);">
+<!-- How It Works -->
+<div class="py-10 md:py-20 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">How it works</h2>
-            <p class="text-lg text-gray-600">Three simple steps to get your electrical work done</p>
+        <div class="text-center mb-8 md:mb-12">
+            <span class="text-[#009FD9] font-semibold text-base uppercase tracking-wider">Simple Process</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 mt-2">How it works</h2>
+            <p class="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">Three simple steps to get your electrical work done</p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-3 md:grid-cols-3 gap-6 md:gap-6">
             <!-- Step 1 -->
             <div class="text-center group">
-                <div class="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg group-hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" 
+                <div class="relative w-full h-64 md:h-80 mx-auto mb-4 md:mb-6 rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                    <img src="{{ Storage::url('images/how-it-works/compare.jpg') }}" 
                          alt="Describe project" 
-                         class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-amber-600/20"></div>
+                         class="w-full h-full object-cover"
+                         loading="lazy">
                 </div>
-                <h3 class="text-lg font-semibold mb-2 text-gray-800">Tell us what you need</h3>
-                <p class="text-gray-600">Describe your electrical project and we'll match you with qualified pros.</p>
+                <div class="w-12 h-12 md:w-14 md:h-14 bg-[#009FD9] text-white rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg text-lg md:text-xl font-bold">1</div>
+                <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-800">Tell us what you need</h3>
+                <p class="text-base md:text-lg text-gray-600 max-w-xs mx-auto">Describe your electrical project and we'll match you with qualified pros.</p>
             </div>
+            
             <!-- Step 2 -->
             <div class="text-center group">
-                <div class="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg group-hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" 
+                <div class="relative w-full h-64 md:h-80 mx-auto mb-4 md:mb-6 rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                    <img src="{{ Storage::url('images/how-it-works/compare2.jpg') }}" 
                          alt="Compare professionals" 
-                         class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-amber-600/20"></div>
+                         class="w-full h-full object-cover"
+                         loading="lazy">
                 </div>
-                <h3 class="text-lg font-semibold mb-2 text-gray-800">Compare & choose</h3>
-                <p class="text-gray-600">Review profiles, ratings, and prices to find the perfect electrician.</p>
+                <div class="w-12 h-12 md:w-14 md:h-14 bg-[#009FD9] text-white rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg text-lg md:text-xl font-bold">2</div>
+                <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-800">Compare & choose</h3>
+                <p class="text-base md:text-lg text-gray-600 max-w-xs mx-auto">Review profiles, ratings, and prices to find the perfect electrician.</p>
             </div>
+            
             <!-- Step 3 -->
             <div class="text-center group">
-                <div class="relative w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg group-hover:scale-105 transition-transform">
-                    <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" 
+                <div class="relative w-full h-64 md:h-80 mx-auto mb-4 md:mb-6 rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                    <img src="{{ Storage::url('images/how-it-works/job-done.jpg') }}"  
                          alt="Job completed" 
-                         class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-amber-600/20"></div>
+                         class="w-full h-full object-cover"
+                         loading="lazy">
                 </div>
-                <h3 class="text-lg font-semibold mb-2 text-gray-800">Book & get it done</h3>
-                <p class="text-gray-600">Schedule a time that works for you and get your problem solved.</p>
+                <div class="w-12 h-12 md:w-14 md:h-14 bg-[#009FD9] text-white rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg text-lg md:text-xl font-bold">3</div>
+                <h3 class="text-xl md:text-2xl font-semibold mb-2 text-gray-800">Book & get it done</h3>
+                <p class="text-base md:text-lg text-gray-600 max-w-xs mx-auto">Schedule a time that works for you and get your problem solved.</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Popular Services with Category Images -->
-<div class="py-16 bg-white/80">
+<!-- Popular Services -->
+<div class="py-12 md:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-800">Popular electrical services</h2>
-            <a href="{{ route('services.index') }}" class="text-amber-600 hover:text-amber-700 font-medium flex items-center">
+        <div class="text-center mb-8 md:mb-12">
+            <div>
+                <span class="text-[#009FD9] font-semibold text-base uppercase tracking-wider">Services</span>
+                <h2 class="text-2xl md:text-3xl font-bold text-[#2F3033] mt-2">Popular Electrical Services</h2>
+            </div>
+            <a href="{{ route('services.index') }}" class="text-[#009FD9] hover:text-sky-600 font-medium inline-flex items-center group text-sm md:text-base">
                 View all services
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
             </a>
         </div>
-        
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <a href="#" class="relative group overflow-hidden rounded-xl">
-                <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80" 
-                     alt="Emergency Repair" 
-                     class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4">
-                    <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                    <span class="text-white font-semibold block">Emergency Repair</span>
+
+        <!-- Swiper Slider Container -->
+        <div class="relative px-8 md:px-12">
+            <div class="swiper-container overflow-hidden" id="servicesSlider">
+                <div class="swiper-wrapper">
+                    @foreach($popularServices as $popularService)
+                        <div class="swiper-slide">
+                            <a href="{{ route('service.electricians', ['service' => $popularService->slug]) }}" 
+                               class="relative group overflow-hidden rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 block">
+                                <img 
+                                    src="{{ Storage::url($popularService->image) }}"
+                                    alt="{{ $popularService->name }}"
+                                    class="w-full h-50 sm:h-48 md:h-80 object-cover group-hover:scale-110 transition-transform duration-500"
+                                    loading="lazy"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                                <div class="absolute bottom-0 left-0 right-0 p-3 md:p-5">
+                                    <span class="text-white font-semibold text-sm md:text-base block">{{ $popularService->name }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
                 </div>
-            </a>
-            <a href="#" class="relative group overflow-hidden rounded-xl">
-                <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80" 
-                     alt="Panel Upgrade" 
-                     class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4">
-                    <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    <span class="text-white font-semibold block">Panel Upgrade</span>
-                </div>
-            </a>
-            <a href="#" class="relative group overflow-hidden rounded-xl">
-                <img src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80" 
-                     alt="Lighting Installation" 
-                     class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4">
-                    <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0114 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                    </svg>
-                    <span class="text-white font-semibold block">Lighting Installation</span>
-                </div>
-            </a>
-            <a href="#" class="relative group overflow-hidden rounded-xl">
-                <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300&q=80" 
-                     alt="Wiring & Rewiring" 
-                     class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div class="absolute bottom-0 left-0 right-0 p-4">
-                    <svg class="w-8 h-8 text-white mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                    </svg>
-                    <span class="text-white font-semibold block">Wiring & Rewiring</span>
-                </div>
-            </a>
+            </div>
+            
+            <!-- Custom Navigation Buttons with Tailwind -->
+            <button class="swiper-button-prev-custom absolute left-0 top-1/2 -translate-y-1/2 bg-[#009FD9] hover:bg-sky-700 text-white w-10 h-10 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center z-10 focus:outline-none focus:ring-2 focus:ring-[#009FD9] focus:ring-offset-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <button class="swiper-button-next-custom absolute right-0 top-1/2 -translate-y-1/2 bg-[#009FD9] hover:bg-sky-700 text-white w-10 h-10 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center z-10 focus:outline-none focus:ring-2 focus:ring-[#009FD9] focus:ring-offset-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
         </div>
+        
+        <!-- Pagination Dots -->
+        <div class="swiper-pagination mt-8"></div>
     </div>
 </div>
 
+<!-- Swiper CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const swiper = new Swiper('#servicesSlider', {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+                dynamicBullets: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next-custom',
+                prevEl: '.swiper-button-prev-custom',
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 3,
+                    spaceBetween: 25,
+                },
+                1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 30,
+                },
+            },
+            effect: 'slide',
+            speed: 800,
+            grabCursor: true,
+            touchRatio: 1,
+        });
+    });
+</script>
+
+<!-- Custom Tailwind-compatible styles -->
+<style>
+    /* Override Swiper default styles with Tailwind-friendly classes */
+    .swiper-pagination-bullet {
+        @apply bg-[#009FD9] opacity-50 transition-all duration-300;
+    }
+    
+    .swiper-pagination-bullet-active {
+        @apply bg-[#009FD9] opacity-100 w-8 rounded-full;
+    }
+    
+    .swiper-button-prev-custom,
+    .swiper-button-next-custom {
+        backdrop-filter: blur(4px);
+    }
+    
+    .swiper-button-prev-custom:hover,
+    .swiper-button-next-custom:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+    
+    /* Hide navigation buttons on very small screens */
+    @media (max-width: 640px) {
+        .swiper-button-prev-custom,
+        .swiper-button-next-custom {
+            @apply w-8 h-8;
+        }
+        
+        .swiper-button-prev-custom svg,
+        .swiper-button-next-custom svg {
+            @apply w-4 h-4;
+        }
+    }
+    
+    /* Add smooth gradient fade on edges for better UX */
+    .swiper-container {
+        mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    }
+    
+    /* Remove mask on touch devices for better interaction */
+    @media (hover: none) {
+        .swiper-container {
+            mask-image: none;
+            -webkit-mask-image: none;
+        }
+    }
+</style>
 <!-- Featured Electricians -->
-<div class="py-16" style="background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d3 100%);">
+<div class="py-12 md:py-20 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold text-gray-800">Featured electricians</h2>
-            <a href="{{ route('electricians.index') }}" class="text-amber-600 hover:text-amber-700 font-medium flex items-center">
-                View all
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-            </a>
+        <div class="text-center mb-8 md:mb-12">
+            <span class="text-[#009FD9] font-semibold text-sm uppercase tracking-wider">Top Rated</span>
+            <h2 class="text-2xl md:text-4xl font-bold text-[#2F3033] mt-2 mb-4">Featured Electricians</h2>
+            <p class="text-[#2F3033] max-w-2xl mx-auto">Choose from our most trusted and highly-rated professionals</p>
         </div>
         
         @php
@@ -206,61 +429,57 @@
                 ->get();
         @endphp
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-6 md:gap-6">
             @forelse($featuredElectricians as $index => $electrician)
-                <a href="{{ route('electricians.show', $electrician) }}" class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
-                    <div class="relative h-32 bg-gradient-to-r from-amber-600 to-amber-700">
-                        <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2">
-                            <div class="w-20 h-20 rounded-full border-4 border-white bg-white overflow-hidden shadow-lg">
-                                @php
-                                    $businessName = $electrician->business_name ?? 'Electrician';
-                                    $initials = '';
-                                    $nameParts = explode(' ', $businessName);
-                                    foreach ($nameParts as $part) {
-                                        if (!empty($part)) {
-                                            $initials .= strtoupper(substr($part, 0, 1));
-                                        }
-                                    }
-                                    if (empty($initials)) {
-                                        $initials = strtoupper(substr($businessName, 0, 1));
-                                    }
-                                    $avatarUrl = "https://ui-avatars.com/api/?background=amber-600&color=fff&bold=true&size=128&name=" . urlencode($initials);
-                                @endphp
-                                
-                                @if($electrician->user && $electrician->user->profile_photo_path && !str_contains($electrician->user->profile_photo_path, 'ui-avatars.com'))
-                                    <img src="{{ $electrician->user->profile_photo_path }}" 
-                                         alt="{{ $electrician->business_name }}" 
-                                         class="w-full h-full object-cover"
-                                         onerror="this.onerror=null; this.src='{{ $avatarUrl }}'">
-                                @else
-                                    <img src="{{ $avatarUrl }}" 
-                                         alt="{{ $electrician->business_name }}" 
-                                         class="w-full h-full object-cover">
-                                @endif
+                <a href="{{ route('electricians.show', $electrician) }}" 
+                   class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col h-full">
+                    <div class="relative pt-6 px-6">
+                        <div class="flex justify-center">
+                            <div class="w-28 h-28 md:w-32 md:h-32 rounded-full border border-white shadow-md overflow-hidden bg-gray-100">
+                                <img src="{{ $electrician->profile_photo }}" 
+                                     alt="{{ $electrician->business_name }}" 
+                                     class="w-full h-full object-cover"
+                                     loading="lazy">
                             </div>
                         </div>
+                        <!-- Optional badge for top rated -->
+                        @if($index == 0)
+                            <div class="absolute top-0 right-4 bg-amber-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow-sm">
+                                ⭐ Top Rated
+                            </div>
+                        @endif
                     </div>
-                    <div class="pt-12 p-5 text-center">
-                        <h3 class="font-semibold text-gray-800 mb-1">{{ $electrician->business_name }}</h3>
-                        <p class="text-sm text-gray-500 mb-3">{{ $electrician->years_experience }} years exp.</p>
+
+                    <!-- Card content -->
+                    <div class="p-5 text-center flex-grow flex flex-col">
+                        <h3 class="font-bold text-[#2F3033] text-lg md:text-xl mb-1">{{ $electrician->business_name }}</h3>
+                        <p class="text-sm text-gray-500 mb-2">{{ $electrician->years_experience }} years experience</p>
                         
+                        <!-- Rating -->
                         <div class="flex items-center justify-center mb-3">
-                            <div class="flex text-amber-500">
+                            <div class="flex text-[#009FD9]">
                                 @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= round($electrician->reviews_avg_rating ?? 0))
-                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">★</svg>
+                                    @if($i <= round($electrician->rating))
+                                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                        </svg>
                                     @else
-                                        <svg class="w-4 h-4 fill-current text-gray-300" viewBox="0 0 20 20">★</svg>
+                                        <svg class="w-4 h-4 fill-current text-gray-300" viewBox="0 0 20 20">
+                                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                        </svg>
                                     @endif
                                 @endfor
                             </div>
-                            <span class="text-xs text-gray-500 ml-2">({{ $electrician->reviews_count ?? 0 }})</span>
+                            <span class="text-xs text-gray-500 ml-2">{{ $electrician->reviews_count }}</span>
                         </div>
                         
-                        <p class="text-sm text-gray-600 mb-3 line-clamp-2">{{ $electrician->bio ?? 'Professional electrician' }}</p>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-2">{{ $electrician->bio ?? 'Professional electrician providing quality electrical services.' }}</p>
                         
-                        <div class="text-amber-600 font-bold text-lg">
-                            ${{ number_format($electrician->hourly_rate ?? 85, 0) }}<span class="text-sm font-normal text-gray-500">/hr</span>
+                        <!-- Price -->
+                        <div class="mt-auto">
+                            <div class="text-[#009FD9] font-semibold text-lg">
+                                R{{ number_format($electrician->hourly_rate ?? 200, 0) }}<span class="text-sm font-normal text-gray-500">/hr</span>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -270,61 +489,73 @@
                 </div>
             @endforelse
         </div>
+        
+        <div class="text-center mt-8 md:mt-10">
+            <a href="{{ route('electricians.index') }}" class="inline-flex items-center px-6 py-3 bg-[#009FD9] text-white rounded-xl hover:bg-sky-700 transition-all duration-300 font-medium shadow-md hover:shadow-lg text-sm md:text-base">
+                Find more electricians
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
     </div>
 </div>
-
 <!-- Why Choose Us with Images -->
-<div class="py-16 bg-white/80">
+<div class="py-12 md:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">Why customers love ElectroBook</h2>
-            <p class="text-lg text-gray-600">Thousands of satisfied customers trust us with their electrical needs</p>
+        <div class="text-center mb-8 md:mb-12">
+            <span class="text-[#009FD9] font-semibold text-sm uppercase tracking-wider">Why Choose Us</span>
+            <h2 class="text-2xl md:text-4xl font-bold text-[#2F3033] mt-2 mb-4">Why customers love ElectroBook</h2>
+            <p class="text-base md:text-lg text-gray-600">Thousands of satisfied customers trust us with their electrical needs</p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-3 md:grid-cols-3 gap-6 md:gap-4">
             <div class="text-center group">
-                <div class="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" 
+                <div class="relative w-50 h-50 md:w-250 md:h-150 mx-auto mb-4 rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                    <img src="{{Storage::url('images/why-choose-us/verified-professionals.jpg') }}" 
                          alt="Verified professionals" 
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover"
+                         loading="lazy">
                 </div>
-                <h3 class="font-semibold text-lg mb-2 text-gray-800">Verified professionals</h3>
-                <p class="text-gray-600">Every electrician is licensed, insured, and background-checked.</p>
+                <h3 class="font-semibold text-lg md:text-xl mb-2 text-[#2F3033]">Verified professionals</h3>
+                <p class="text-sm md:text-base text-gray-600">Every electrician is licensed, insured, and background-checked.</p>
             </div>
             
             <div class="text-center group">
-                <div class="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" 
+                <div class="relative w-50 h-50 md:w-250 md:h-150 mx-auto mb-4 rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                    <img src="{{ Storage::url('images/why-choose-us/instant-booking2.jpg') }}" 
                          alt="Instant booking" 
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover"
+                         loading="lazy">
                 </div>
-                <h3 class="font-semibold text-lg mb-2 text-gray-800">Instant booking</h3>
-                <p class="text-gray-600">Book appointments instantly with real-time availability.</p>
+                <h3 class="font-semibold text-lg md:text-xl mb-2 text-gray-800">Instant booking</h3>
+                <p class="text-sm md:text-base text-gray-600">Book appointments instantly with real-time availability.</p>
             </div>
             
             <div class="text-center group">
-                <div class="relative w-24 h-24 mx-auto mb-4 rounded-full overflow-hidden shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80" 
+                <div class="relative w-50 h-50 md:w-250 md:h-150 mx-auto mb-4 rounded-xl overflow-hidden shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                    <img src="{{ Storage::url('images/why-choose-us/Satisfaction2.jpeg') }}" 
                          alt="Satisfaction guaranteed" 
-                         class="w-full h-full object-cover">
+                         class="w-full h-full object-cover"
+                         loading="lazy">
                 </div>
-                <h3 class="font-semibold text-lg mb-2 text-gray-800">Satisfaction guaranteed</h3>
-                <p class="text-gray-600">Not happy? We'll work to make it right.</p>
+                <h3 class="font-semibold text-lg md:text-xl mb-2 text-gray-800">Satisfaction guaranteed</h3>
+                <p class="text-sm md:text-base text-gray-600">Not happy? We'll work to make it right.</p>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Customer Testimonials -->
-<div class="py-16" style="background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d3 100%);">
+<div class="py-12 md:py-20 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">What our customers say</h2>
-            <p class="text-lg text-gray-600">Real stories from real customers</p>
+        <div class="text-center mb-8 md:mb-12">
+            <span class="text-[#009FD9] font-semibold text-sm uppercase tracking-wider">Testimonials</span>
+            <h2 class="text-2xl md:text-4xl font-bold text-[#2F3033] mt-2 mb-4">What our customers say</h2>
+            <p class="text-base md:text-lg text-gray-500">Real stories from real customers</p>
         </div>
         
         @php
-            // Get latest 3 reviews with their clients and electricians
             $testimonials = App\Models\Review::with(['client', 'electrician'])
                 ->whereNotNull('comment')
                 ->where('comment', '!=', '')
@@ -332,7 +563,6 @@
                 ->limit(3)
                 ->get();
             
-            // If less than 3 reviews, get additional random ones
             if($testimonials->count() < 3) {
                 $additional = App\Models\Review::with(['client', 'electrician'])
                     ->whereNotNull('comment')
@@ -346,46 +576,29 @@
         @endphp
         
         @if($testimonials->isNotEmpty())
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                 @foreach($testimonials as $review)
-                    <div class="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition group">
+                    <div class="bg-white rounded-2xl shadow-lg p-5 md:p-6 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                         <div class="flex items-center mb-4">
-                            <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 shadow-sm mr-4 flex-shrink-0">
-                                @php
-                                    $clientName = $review->client->name ?? 'Customer';
-                                    $initials = '';
-                                    $nameParts = explode(' ', $clientName);
-                                    foreach ($nameParts as $part) {
-                                        if (!empty($part)) {
-                                            $initials .= strtoupper(substr($part, 0, 1));
-                                        }
-                                    }
-                                    if (empty($initials)) {
-                                        $initials = strtoupper(substr($clientName, 0, 1));
-                                    }
-                                    $avatarUrl = "https://ui-avatars.com/api/?background=6b7280&color=fff&bold=true&size=128&name=" . urlencode($initials);
-                                @endphp
-                                
-                                @if($review->client && $review->client->profile_photo_path && !str_contains($review->client->profile_photo_path, 'ui-avatars.com'))
-                                    <img src="{{ $review->client->profile_photo_path }}" 
-                                         alt="{{ $clientName }}" 
-                                         class="w-full h-full object-cover"
-                                         onerror="this.onerror=null; this.src='{{ $avatarUrl }}'">
-                                @else
-                                    <img src="{{ $avatarUrl }}" 
-                                         alt="{{ $clientName }}" 
-                                         class="w-full h-full object-cover">
-                                @endif
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden bg-gray-200 shadow-md mr-4 flex-shrink-0">
+                                <img src="{{ $review->client->avatar_url ?? 'https://ui-avatars.com/api/?background=6b7280&color=fff&bold=true&size=128&name=?' }}" 
+                                     alt="{{ $review->client->name ?? 'Customer' }}" 
+                                     class="w-full h-full object-cover"
+                                     loading="lazy">
                             </div>
                             <div>
-                                <h4 class="font-semibold text-gray-800">{{ $clientName }}</h4>
+                                <h4 class="font-semibold text-[#2F3033] text-sm md:text-base">{{ $review->client->name ?? 'Customer' }}</h4>
                                 <div class="flex items-center">
-                                    <div class="flex text-amber-500 text-sm">
+                                    <div class="flex text-[#009FD9] text-xs md:text-sm">
                                         @for($i = 1; $i <= 5; $i++)
                                             @if($i <= $review->rating)
-                                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">★</svg>
+                                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                                </svg>
                                             @else
-                                                <svg class="w-4 h-4 fill-current text-gray-300" viewBox="0 0 20 20">★</svg>
+                                                <svg class="w-4 h-4 fill-current text-gray-300" viewBox="0 0 20 20">
+                                                    <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                                                </svg>
                                             @endif
                                         @endfor
                                     </div>
@@ -393,12 +606,12 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="text-gray-600 italic line-clamp-3">"{{ $review->comment }}"</p>
+                        <p class="text-gray-600 italic text-sm md:text-base line-clamp-4">"{{ $review->comment }}"</p>
                         @if($review->electrician)
-                            <div class="mt-3 pt-3 border-t border-gray-100">
+                            <div class="mt-4 pt-3 border-t border-gray-100">
                                 <p class="text-xs text-gray-400">
                                     Service by: 
-                                    <span class="text-amber-600 font-medium">{{ $review->electrician->business_name }}</span>
+                                    <span class="text-[#009FD9] font-medium">{{ $review->electrician->business_name }}</span>
                                 </p>
                             </div>
                         @endif
@@ -407,7 +620,7 @@
             </div>
         @else
             <div class="text-center py-12">
-                <div class="bg-white rounded-xl p-8 max-w-md mx-auto">
+                <div class="bg-white rounded-2xl p-8 max-w-md mx-auto shadow-lg">
                     <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
                     </svg>
@@ -420,110 +633,95 @@
 </div>
 
 <!-- FAQ Preview -->
-<div id="faq" class="py-16 bg-white/80">
+<div id="faq" class="py-12 md:py-20 bg-white">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-gray-800 text-center mb-8">Frequently asked questions</h2>
+        <div class="text-center mb-8 md:mb-12">
+            <span class="text-[#009FD9] font-semibold text-sm uppercase tracking-wider">FAQ</span>
+            <h2 class="text-2xl md:text-3xl font-bold text-[#2F3033] mt-2 mb-4">Frequently asked questions</h2>
+            <p class="text-base md:text-lg text-gray-600">Got questions? We've got answers</p>
+        </div>
         
-        <div class="space-y-3">
-            <div class="bg-white rounded-lg border border-gray-200" x-data="{ open: false }">
-                <button @click="open = !open" class="flex justify-between items-center w-full px-6 py-4">
-                    <span class="font-medium text-gray-800">How do I book an electrician?</span>
-                    <svg class="w-5 h-5 text-gray-500" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="space-y-4">
+            <div class="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all duration-300" x-data="{ open: false }">
+                <button @click="open = !open" class="flex justify-between items-center w-full px-4 md:px-6 py-4 md:py-5">
+                    <span class="font-medium text-[#2F3033] text-sm md:text-lg">How do I book an electrician?</span>
+                    <svg class="w-5 h-5 text-gray-500 transition-transform duration-300" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="open" class="px-6 pb-4 text-gray-600">
-                    Simply search for the service you need, browse electricians in your area, check their reviews and rates, and book a time that works for you. You'll receive an instant confirmation.
+                <div x-show="open" x-collapse class="px-4 md:px-6 pb-4 md:pb-5 text-gray-600 border-t border-gray-100 text-sm md:text-base">
+                    <p>Simply search for the service you need, browse electricians in your area, check their reviews and rates, and book a time that works for you. You'll receive an instant confirmation via email and SMS.</p>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg border border-gray-200" x-data="{ open: false }">
-                <button @click="open = !open" class="flex justify-between items-center w-full px-6 py-4">
-                    <span class="font-medium text-gray-800">Are electricians verified?</span>
-                    <svg class="w-5 h-5 text-gray-500" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all duration-300" x-data="{ open: false }">
+                <button @click="open = !open" class="flex justify-between items-center w-full px-4 md:px-6 py-4 md:py-5">
+                    <span class="font-medium text-[#2F3033] text-sm md:text-lg">Are electricians verified?</span>
+                    <svg class="w-5 h-5 text-gray-500 transition-transform duration-300" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="open" class="px-6 pb-4 text-gray-600">
-                    Yes, all electricians on our platform go through a thorough verification process including license checks, background screening, and identity verification.
+                <div x-show="open" x-collapse class="px-4 md:px-6 pb-4 md:pb-5 text-gray-600 border-t border-gray-100 text-sm md:text-base">
+                    <p>Yes, all electricians on our platform go through a thorough verification process including license checks, background screening, identity verification, and insurance validation before they can accept bookings.</p>
                 </div>
             </div>
             
-            <div class="bg-white rounded-lg border border-gray-200" x-data="{ open: false }">
-                <button @click="open = !open" class="flex justify-between items-center w-full px-6 py-4">
-                    <span class="font-medium text-gray-800">What if I need emergency service?</span>
-                    <svg class="w-5 h-5 text-gray-500" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all duration-300" x-data="{ open: false }">
+                <button @click="open = !open" class="flex justify-between items-center w-full px-4 md:px-6 py-4 md:py-5">
+                    <span class="font-medium text-gray-800 text-sm md:text-lg">What if I need emergency service?</span>
+                    <svg class="w-5 h-5 text-gray-500 transition-transform duration-300" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
-                <div x-show="open" class="px-6 pb-4 text-gray-600">
-                    Many of our electricians offer 24/7 emergency services. Look for the "Available now" badge or filter by emergency services to find help immediately.
+                <div x-show="open" x-collapse class="px-4 md:px-6 pb-4 md:pb-5 text-gray-600 border-t border-gray-100 text-sm md:text-base">
+                    <p>Many of our electricians offer 24/7 emergency services. Look for the "Available now" badge or filter by emergency services to find help immediately. Emergency response typically within 60 minutes.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl border border-gray-200 hover:shadow-md transition-all duration-300" x-data="{ open: false }">
+                <button @click="open = !open" class="flex justify-between items-center w-full px-4 md:px-6 py-4 md:py-5">
+                    <span class="font-medium text-[#2F3033] text-sm md:text-lg">How does pricing work?</span>
+                    <svg class="w-5 h-5 text-gray-500 transition-transform duration-300" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                </button>
+                <div x-show="open" x-collapse class="px-4 md:px-6 pb-4 md:pb-5 text-gray-600 border-t border-gray-100 text-sm md:text-base">
+                    <p>Electricians set their own hourly rates. You'll see the price upfront before booking. There are no hidden fees or surprises. Payment is processed securely through our platform after the job is completed.</p>
                 </div>
             </div>
         </div>
         
         <div class="text-center mt-8">
-            <a href="#" class="text-amber-600 hover:text-amber-700 font-medium">
-                View all FAQs →
+            <a href="#" class="text-[#009FD9] hover:text-sky-600 font-medium inline-flex items-center group text-sm md:text-base">
+                View all FAQs
+                <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
         </div>
     </div>
 </div>
 
 <!-- CTA Section -->
-<div class="relative bg-amber-700 overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-        <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
-             alt="Background" 
-             class="w-full h-full object-cover">
-    </div>
-    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <h2 class="text-3xl font-bold text-white mb-4">Ready to get started?</h2>
-        <p class="text-lg text-white/90 mb-8">Join thousands of satisfied customers who found their trusted electrician through ElectroBook.</p>
+<div class="relative bg-gray-100 overflow-hidden">
+    
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 text-center">
+        <h2 class="text-2xl md:text-4xl font-bold text-[#2F3033] mb-4">Ready to get started?</h2>
+        <p class="text-base md:text-xl text-gray-500 mb-8">Join thousands of satisfied customers who found their trusted electrician through ElectroBook.</p>
         <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="{{ route('services.index') }}" class="px-6 py-3 bg-white text-amber-600 font-medium rounded-lg hover:bg-gray-100 transition">
+            <a href="{{ route('services.index') }}" class="px-6 md:px-8 py-3 bg-white text-[#009FD9] font-medium rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl text-sm md:text-base">
                 Find an electrician
             </a>
             @guest
-                <a href="{{ route('register') }}" class="px-6 py-3 border border-white text-white font-medium rounded-lg hover:bg-white/10 transition">
+                <a href="{{ route('register') }}" class="px-6 md:px-8 py-3 border-2 border-white bg-[#009FD9] font-medium rounded-xl hover:bg-white/10 transition-all duration-300 text-sm md:text-base">
                     Sign up as electrician
                 </a>
             @endguest
         </div>
+        <p class="text-gray-500 text-xs md:text-sm mt-6">No credit card required • Free to browse</p>
     </div>
 </div>
 
-<script>
-    const words = ['electrician', 'plumber', 'painter', 'handyman', 'carpenter'];
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    const typedWordSpan = document.getElementById('animated-word');
 
-    function typeEffect() {
-        const currentWord = words[wordIndex];
-        
-        if (isDeleting) {
-            typedWordSpan.textContent = currentWord.substring(0, charIndex - 1);
-            charIndex--;
-        } else {
-            typedWordSpan.textContent = currentWord.substring(0, charIndex + 1);
-            charIndex++;
-        }
-
-        if (!isDeleting && charIndex === currentWord.length) {
-            isDeleting = true;
-            setTimeout(typeEffect, 2000);
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            wordIndex = (wordIndex + 1) % words.length;
-            setTimeout(typeEffect, 500);
-        } else {
-            setTimeout(typeEffect, isDeleting ? 50 : 100);
-        }
-    }
-
-    typeEffect();
-</script>
 
 @endsection

@@ -28,10 +28,13 @@ class Service extends Model
         'slug',
         'description',
         'base_price',
-        'category',
+        'category_id',
         'icon',
         'estimated_duration_minutes',
-        'is_active'
+        'is_active',
+        'image',       
+        'is_popular',    
+        'usage_count',
     ];
 
     protected $casts = [
@@ -64,13 +67,10 @@ class Service extends Model
         return $this->hasManyThrough(Review::class, Booking::class);
     }
 
-    /**
- * The categories that belong to the service.
- */
-    public function categories()
+ 
+    public function category()
     {
-        return $this->belongsToMany(Category::class)
-                    ->withTimestamps();
+        return $this->belongsTo(Category::class);
     }
 
     public function scopeActive($query)

@@ -29,7 +29,7 @@ class ServiceElectricianController extends Controller
             }])
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
-            ->withCount('bookings') // For "hires on Thumbtack" count
+            ->withCount('bookings') 
             ->when($request->sort, function($query, $sort) {
                 if ($sort === 'rating') {
                     $query->orderBy('reviews_avg_rating', 'desc');
@@ -44,7 +44,7 @@ class ServiceElectricianController extends Controller
                 $query->where('electricians.id', $service->id);
             })
             ->active()
-            ->take(5)
+            ->take(3)
             ->get();
 
         return view('public.services.electricians', compact('service', 'electricians', 'popularServices'));

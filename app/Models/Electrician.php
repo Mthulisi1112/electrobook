@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Electrician extends Model
 {
@@ -94,5 +95,31 @@ class Electrician extends Model
         return $query->where('user_id', $userId);
     }
 
-    
+    public function getProfilePhotoUrlAttribute()
+    {
+        // Check if profile_photo exists and is not null
+        if (!empty($this->profile_photo)) {
+            // Check if the file actually exists in storage
+            if (Storage::disk('public')->exists($this->profile_photo)) {
+                return Storage::url($this->profile_photo);
+            }
+        }
+        
+        // Fallback to UI Avatars if file doesn't exist
+        $businessName = $this->business_name ?? 'Electrician';
+        $initials = '';
+        $nameParts = explode(' ', $businessName);
+        foreach ($nameParts as $part) {
+            if (!empty($part)) {
+                $initials .= strtoupper(substr($part, 0, 1));
+            }
+        }
+        
+        if (empty($initials)) {
+            $initials = strtoupper(substr($businessName, 0, 1));
+        }
+        
+        return "https://ui-avatars.com/api/?background=009FD9&color=fff&bold=true&size=200&name=" . urlencode($initials);
+    }
+        
 }

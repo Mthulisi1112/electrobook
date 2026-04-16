@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('years_experience')->nullable();
             $table->timestamps();
         });
+        
     }
 
     public function down()

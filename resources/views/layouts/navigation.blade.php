@@ -1,3 +1,26 @@
+<style>
+.nav-custom {
+    -webkit-text-size-adjust: 100%;
+    font-family: Rise, Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #676d73;
+    font-size: 14px !important;
+}
+.nav-custom svg {
+    fill: #009fd9;
+}
+.nav-custom a,
+.nav-custom button {
+    cursor: pointer;
+}
+/* Override Tailwind text size classes to maintain consistent 14px base */
+.nav-custom .text-xs,
+.nav-custom .text-sm,
+.nav-custom .text-base {
+    font-size: inherit !important;
+}
+</style>
+
 <nav x-data="{ 
     open: false, 
     profile: false,
@@ -5,19 +28,18 @@
     search: false,
     activeLink: '{{ request()->routeIs('home') ? 'home' : (request()->routeIs('services.index') ? 'services' : '') }}'
 }" 
-class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+class="nav-custom bg-white border-b  sticky top-0 z-50 shadow-sm">
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
 <div class="flex justify-between items-center h-14 md:h-16">
 
 <!-- Logo only -->
-<div class="flex items-center">
+<div class="flex items-center -ml-4">
     <a href="{{ route('home') }}" class="flex items-center">
-        <div class="w-8 h-8 bg-[#1f75fe] rounded-lg flex items-center justify-center shadow-sm">
+         <div class="w-10 h-10 bg-[#009FD9] rounded-full flex items-center justify-center shadow-sm">
             <span class="text-white font-bold text-base">E</span>
         </div>
-        <span class="ml-2 text-lg font-semibold text-gray-800">ElectroBook</span>
     </a>
 </div>
 
@@ -29,9 +51,9 @@ class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
             @click="open = !open"
             @click.away="open = false"
             :class="{ 'text-[#1f75fe]': activeLink === 'services' }"
-            class="flex items-center space-x-1 px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#1f75fe] transition"
+            class="flex items-center space-x-1 px-4 py-2 text-sm text-gray-600 hover:text-[#1f75fe] transition"
         >
-            <span>Explore Services</span>
+            <span class="text-[#676D73] text-sm">Explore Services</span>
             <svg class="w-4 h-4" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
             </svg>
@@ -113,22 +135,23 @@ class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
     </div>
 
     <!-- Join as a pro Link -->
-    <a href="{{ route('electricians.index') }}" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#1f75fe] transition">
+    <a href="{{ route('electricians.index') }}" class="px-4 py-1 text-xs font-medium text-[#676D73] hover:text-[#1f75fe] transition">
         Join as a pro
     </a>
 
     <!-- Divider -->
-    <div class="h-5 w-px bg-gray-200 mx-1"></div>
+    <div class="h-5 w-px bg-gray-200 mx-2"></div>
+
+    <!-- Sign up Button-->
+    <a href="{{ route('register') }}" class="ml-1 px-6 py-3 bg-[#009FD9] text-white text-xs font-semibold rounded hover:bg-sky-600 transition shadow-sm">
+        Sign up
+    </a>
 
     <!-- Log in Link -->
-    <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#1f75fe] transition">
+    <a href="{{ route('login') }}" class="pl-6 py-1 text-xs font-medium text-[#676D73] hover:text-[#1f75fe] transition">
         Log in
     </a>
 
-    <!-- Sign up Button-->
-    <a href="{{ route('register') }}" class="ml-1 px-5 py-2 bg-[#0b5269] text-white text-sm font-semibold rounded hover:bg-[#0e5fd9] transition shadow-sm">
-        Sign up
-    </a>
     <!-- Admin Dropdown (only for admins) -->
     @auth
         @if(auth()->user()->isAdmin())

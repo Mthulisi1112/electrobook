@@ -2,7 +2,11 @@
 module.exports = {
     content: ["./resources/**/*.blade.php", "./resources/**/*.js"],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                sans: ["Rise", "Avenir", "Helvetica", "Arial", "sans-serif"],
+            },
+        },
     },
     plugins: [],
 };

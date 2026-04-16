@@ -73,11 +73,11 @@ trait HandlesServiceFilters
     protected function getActiveCategories(): array
     {
         return Service::active()
-            ->select('category')
+            ->select('category_id')
             ->distinct()
-            ->whereNotNull('category')
-            ->orderBy('category')
-            ->pluck('category')
+            ->whereNotNull('category_id')
+            ->orderBy('category_id')
+            ->pluck('category_id')
             ->toArray();
     }
 
@@ -115,7 +115,7 @@ trait HandlesServiceFilters
     protected function getRelatedServices(Service $service, int $limit = 4)
     {
         return Service::active()
-            ->where('category', $service->category)
+            ->where('category_id', $service->category_id)
             ->where('id', '!=', $service->id)
             ->inRandomOrder()
             ->limit($limit)

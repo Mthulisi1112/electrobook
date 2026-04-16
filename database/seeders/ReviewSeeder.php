@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Review;
 use App\Models\Booking;
-use App\Models\User;
 use Illuminate\Database\Seeder;
-use Carbon\Carbon;
 
 class ReviewSeeder extends Seeder
 {
@@ -145,6 +143,6 @@ class ReviewSeeder extends Seeder
             }
         }
         
-        $this->command->info('Reviews seeded successfully!');
+        $this->command->info('Reviews seeded successfully! Total: ' . Review::count());
     }
 }

@@ -1,41 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen" style="background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d3 50%, #d9cfbf 100%);">
-    <!-- Hero Section with Background Image (Kept as is) -->
-    <div class="relative overflow-hidden">
-        <!-- Background Image -->
-        <div class="absolute inset-0">
-            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1920&q=80" 
-                alt="Professional electrician working on electrical panel" 
-                class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-black/50"></div>
-            <div class="absolute inset-0 opacity-20" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cpath d=\"M30 0 L30 60 M0 30 L60 30 M15 15 L45 45 M45 15 L15 45\" stroke=\"white\" stroke-width=\"0.5\" fill=\"none\" opacity=\"0.3\"/%3E%3C/svg%3E'); background-repeat: repeat;"></div>
-        </div>
-        
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-            <div class="flex items-center text-xs text-gray-200 mb-6">
-                <a href="{{ route('home') }}" class="hover:text-white transition">ElectroBook</a>
-                <svg class="w-3 h-3 mx-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-                <a href="{{ route('services.show', $service) }}" class="hover:text-white transition">{{ $service->name }}</a>
-                <svg class="w-3 h-3 mx-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                </svg>
-                <span class="font-medium text-white">Electricians</span>
-            </div>
 
-            <div class="max-w-3xl">
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                    {{ $service->name }} <span class="text-yellow-400">near you</span>
-                </h1>
-                <p class="text-lg md:text-xl text-gray-100 leading-relaxed mb-6">
-                    {{ $service->description ?? 'Find trusted, licensed electricians in your area. Emergency repairs, installations, and upgrades - all backed by our satisfaction guarantee.' }}
-                </p>
-            </div>
-        </div>
-    </div>
+<div class="bg-white"> 
+        <!-- Background Image -->
+        <div class="flex p-10 ">
+            <img 
+                src="{{ Storage::url('images/services/panel-upgrade2.webp') }}"
+                alt="Professional electrician working on electrical panel" 
+                class="w-full h-[50%]object-cover rounded-xl ">       
+            
+        </div>              
+</div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
@@ -56,7 +32,7 @@
         <div class="space-y-4">
             @foreach($electricians as $index => $electrician)
             <div class="relative border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-all duration-300 bg-white overflow-hidden group">
-                <div class="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none">
+                <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none">
                     <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ece?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
                          alt="Background" 
                          class="w-full h-full object-cover">
@@ -81,7 +57,7 @@
                                 @endphp
                                 
                                 @if($electrician->user && $electrician->user->profile_photo_path && !str_contains($electrician->user->profile_photo_path, 'ui-avatars.com'))
-                                    <img src="{{ $electrician->user->profile_photo_path }}" 
+                                    <img src="{{ $electrician->profile_photo }}" 
                                          alt="{{ $userName }}" 
                                          class="w-full h-full object-cover"
                                          onerror="this.onerror=null; this.src='{{ $avatarUrl }}'">
@@ -133,7 +109,7 @@
                         </p>
 
                         <div class="flex items-center space-x-4 mb-3">
-                            <span class="text-xs text-orange-600 bg-orange-50 px-2 py-0.5 rounded">📌 In high demand</span>
+                            <span class="text-xs text-orange-300 bg-orange-50 px-2 py-0.5 rounded">📌 In high demand</span>
                         </div>
 
                         <div class="flex items-center space-x-4 mb-3 text-xs text-gray-600">
@@ -174,14 +150,14 @@
                         </div>
 
                         <div class="text-sm">
-                            <span class="font-bold text-lg text-amber-600">${{ $electrician->hourly_rate ?? 69 }}</span>
+                            <span class="font-bold text-lg text-[#009FD9]">R{{ $electrician->hourly_rate ?? 200 }}</span>
                             <span class="text-xs text-gray-500">/service call</span>
                             <span class="text-xs text-gray-500 ml-1 bg-gray-100 px-2 py-0.5 rounded">(waived if hired)</span>
                         </div>
                     </div>
 
                     <a href="{{ route('electricians.show', $electrician) }}" 
-                       class="ml-6 px-6 py-2.5 bg-amber-600 text-white text-sm font-medium rounded-lg hover:bg-amber-700 hover:shadow-md transition-all whitespace-nowrap transform hover:scale-105">
+                       class="ml-6 px-6 py-2.5 bg-[#009FD9] text-white text-sm font-medium rounded-lg hover:bg-sky-400 hover:shadow-md transition-all whitespace-nowrap transform hover:scale-105">
                         View profile →
                     </a>
                 </div>
@@ -196,10 +172,6 @@
 </div>
 
 <style>
-    body {
-        background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d3 50%, #d9cfbf 100%);
-    }
-    
     .pagination {
         display: flex;
         justify-content: center;

@@ -2,18 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Add these font styles */
-body {
-    font-family:
-        "Figtree",
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        sans-serif;
-    letter-spacing: -0.01em;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+        font-size: 16px; /* Base font size */
+    }
+
+    body {
+        font-family: "Rise", "Avenir", Helvetica, Arial, sans-serif;
+        color: #676d73;
+        letter-spacing: -0.01em;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-size: 16px;
+    }
+
+    a,
+    button {
+        cursor: pointer;
+    }
+
+    svg {
+        fill: #009fd9;
+    }
 }
 
 /* Optional: Heading styles for better hierarchy */

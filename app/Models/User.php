@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use Illuminate\Support\Facades\Storage;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -116,12 +116,21 @@ class User extends Authenticatable
                 'email_verified_at' => $this->freshTimestamp(),
             ])->save();
         }
-    public function getProfilePhotoUrlAttribute(): string
-        {
-            if ($this->profile_photo_path) {
-                return asset('storage/' . $this->profile_photo_path);
-            }
-
-            return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+    public function getAvatarUrlAttribute()
+    {
+        // For electricians, prefer their professional photo
+        if ($this->isElectrician() && $this->electrician && $this->electrician->profile_photo) {
+            return Storage::url($this->electrician->profile_photo);
         }
+        
+        // For regular users or fallback
+        if ($this->profile_photo_path && Storage::disk('public')->exists($this->profile_photo_path)) {
+            return Storage::url($this->profile_photo_path);
+        }
+        
+        // Default avatar
+        return "https://ui-avatars.com/api/?background=2b6e9e&color=fff&name=" . urlencode($this->name);
+    }
+
+    
 }
